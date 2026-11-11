@@ -29,7 +29,7 @@ class PhaseStatus(Enum):
 
 
 class GamePhase(Enum):
-    """The four sequential phases that make up a single game round."""
+    """The sequential phases that make up a single game round."""
     AUCTION = auto()
     BUY_RESOURCES = auto()
     BUILD_HOUSES = auto()
@@ -38,7 +38,7 @@ class GamePhase(Enum):
 
 
 class GameStep(Enum):
-    """The three steps of the game. The step affects building limits and deck composition."""
+    """The three steps of the game. The step affects building limits."""
     STEP_1 = auto()
     STEP_2 = auto()
     STEP_3 = auto()
@@ -65,9 +65,9 @@ class SerializedGameState:
 @dataclass(frozen=True)
 class PowerPlant:
     """
-    Represents a power plant card.
+    Represents a power plant card according to the UML diagram.
     """
-    number: int
+    number: PowerPlantNumber
     acceptedResources: List[Resource]
-    cities: int
-    required_resources: int = 0
+    numberOfCities: int
+    resourceAmount: int = 0

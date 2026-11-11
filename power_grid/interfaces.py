@@ -32,36 +32,22 @@ class StoreResources(Protocol):
         """Checks if the player can store the given resources."""
         ...
 
+
+class UsePowerPlants(Protocol):
+    """Interface for a class that manages a player's power plants."""
+
     def numberOfSuppliableTowns(
         self, resources: Sequence[Resource], powerplants: Sequence[PowerPlant]
     ) -> int | RequestError:
         """Returns the number of towns that can be supplied or an error."""
         ...
 
-    def numberOfSuppliebleTowns(
-        self, resources: Sequence[Resource], powerplants: Sequence[PowerPlant]
-    ) -> int:
-        """Returns the number of towns that can be supplied."""
-        ...
-
-
-class UsePowerPlants(Protocol):
-    """Interface for a class that manages a player's power plants."""
-
-    def add_power_plant(self, plant: PowerPlant) -> None:
-        """Adds a new power plant to the player's collection."""
-        ...
-
-    def get_power_plants(self) -> Sequence[PowerPlant]:
-        """Returns the list of power plants owned by the player."""
-        ...
-
 
 class MaximumNumberOfUsablePowerPlants(Protocol):
     """Interface for calculating how many power plants can be powered."""
 
-    def calculate_max_usable(
-        self, plants: Sequence[PowerPlant], resources: Sequence[Resource]
+    def numberOfUsablePowerPlants(
+        self, resources: Sequence[Resource], powerplants: Sequence[PowerPlant]
     ) -> int:
-        """Calculates the maximum number of power plants that can run with the given resources."""
+        """Calculates the number of usable power plants with the given resources."""
         ...
