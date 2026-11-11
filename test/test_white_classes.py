@@ -10,8 +10,6 @@ from power_grid.simple_types import (
     SerializedGameState,
     PowerPlantNumber,
 )
-
-
 class TestWhiteClasses(unittest.TestCase):
     """
     Unit tests for the white classes (Enums and Dataclasses).
@@ -25,19 +23,14 @@ class TestWhiteClasses(unittest.TestCase):
         """
         # PlayerColor should have 6 colors: RED, BLUE, GREEN, YELLOW, PURPLE, BLACK
         self.assertEqual(len(PlayerColor), 6)
-        
         # Resource should have 4 types: COAL, OIL, GARBAGE, URANIUM
         self.assertEqual(len(Resource), 4)
-        
         # PhaseStatus should have 3 states
         self.assertEqual(len(PhaseStatus), 3)
-        
         # GamePhase should have 4 phases: AUCTION, BUY_RESOURCES, BUILD_HOUSES, BUREAUCRACY
         self.assertEqual(len(GamePhase), 4)
-        
         # GameStep should have 3 steps: STEP_1, STEP_2, STEP_3
         self.assertEqual(len(GameStep), 3)
-
     def test_power_plant_valid(self) -> None:
         """
         Test creating a valid power plant.
@@ -117,11 +110,9 @@ class TestWhiteClasses(unittest.TestCase):
         # Test RequestError
         err = RequestError(description="Not enough money")
         self.assertEqual(err.description, "Not enough money")
-        
         # Test SerializedGameState
         state = SerializedGameState(state="{}")
         self.assertEqual(state.state, "{}")
-        
         # Test PowerPlantNumber
         num = PowerPlantNumber(number=5)
         self.assertEqual(num.number, 5)

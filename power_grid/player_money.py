@@ -22,3 +22,4 @@ class PlayerMoney:
         if not self.has_enough_money(amount):
             raise ValueError("Not enough money")
         self.current_money -= amount
+        

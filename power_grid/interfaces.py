@@ -59,3 +59,4 @@ class MaximumNumberOfUsablePowerPlants(Protocol):
     ) -> int:
         """Calculates the maximum number of power plants that can run with the given resources."""
         ...
+        

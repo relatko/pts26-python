@@ -90,3 +90,4 @@ class InterfaceBureaucracyGameController(Protocol):
 
     def get_state(self) -> str:
         ...
+        
