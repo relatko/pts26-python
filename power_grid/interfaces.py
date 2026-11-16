@@ -2,7 +2,7 @@
 from collections.abc import Sequence
 from typing import Protocol
 
-from power_grid.simple_types import PowerPlant, RequestError, Resource
+from power_grid.simple_types import PowerPlant, RequestError, Resource, SerializedGameState
 
 
 class InterfaceResourcePoolResourceMarket(Protocol):
@@ -53,3 +53,47 @@ class MaximumNumberOfUsablePowerPlants(Protocol):
     ) -> int:
         """Calculates the number of usable power plants with the given resources."""
         ...
+
+
+class PowerGridRulesGameInterface(Protocol):
+    """The interface of the game for the outside world (given by the teacher).
+
+    Players are identified by an int, resources are encoded as a string where
+    "C" is coal, "O" oil, "G" garbage and "U" uranium.
+    """
+
+    def selectPowerPlantToBid(
+        self, playerId: int, powerPlantNumber: int, firstBid: int
+    ) -> SerializedGameState | RequestError:
+        ...
+
+    def doNotWantPowerPlant(self, playerId: int) -> SerializedGameState | RequestError:
+        ...
+
+    def bidForCurrentPowerPlant(
+        self, playerId: int, bid: int
+    ) -> SerializedGameState | RequestError:
+        ...
+
+    def doNotBidForCurrentPowerPlant(self, playerId: int) -> SerializedGameState | RequestError:
+        ...
+
+    def removePowerPlant(
+        self, playerId: int, powerplantNumber: int, removedResources: str
+    ) -> SerializedGameState | RequestError:
+        ...
+
+    def buyResources(self, playerId: int, resources: str) -> SerializedGameState | RequestError:
+        ...
+
+    def buyHouses(
+        self, playerId: int, townNames: Sequence[str]
+    ) -> SerializedGameState | RequestError:
+        """townNames may be empty (the player passes)."""
+        ...
+
+    def usePowerPlants(
+        self, playerId: int, powerPlantNumbers: Sequence[int], resourcesToBurn: str
+    ) -> SerializedGameState | RequestError:
+        ...
+        
