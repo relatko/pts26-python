@@ -34,6 +34,7 @@ class FakeBoard:
         self.resources = list(resources)
         self.plants = list(plants)
         self.income_towns: list[int] = []
+        
 
     def outstanding_money(self) -> int:
         return self.money
@@ -105,6 +106,7 @@ class FakeMarket:
         self.removed_below: list[int] = []
         self.step3_started = 0
         self.prepared = 0
+        self.should_trigger_step3 = False
 
     def remove_power_plants_cheaper_than(self, value: int) -> None:
         self.removed_below.append(value)

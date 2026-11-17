@@ -9,7 +9,7 @@ from power_grid.steps import CheckAndBumpStep
 
 class BuildingHousesTest(unittest.TestCase):
     """BuildingHouses against fake towns and market and the real step checker."""
-
+    
     def setUp(self) -> None:
         self.red = FakeBoard()
         self.blue = FakeBoard()

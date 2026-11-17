@@ -94,7 +94,7 @@ class StepChecker(Protocol):
     def checkAndBumpToStep2(self, max_cities: int) -> bool:
         ...
 
-    def checkAndBumpToStep3(self, max_cities: int) -> bool:
+    def checkAndBumpToStep3(self, step3_card_drawn: bool) -> bool:
         ...
 
 

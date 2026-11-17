@@ -40,7 +40,7 @@ class PowerPlantMarket:
     def _get_plant_num(plant: PowerPlant) -> int:
         num = plant.number
         if hasattr(num, "number"):
-            num = num.number
+            num = num.number  # type: ignore
         if isinstance(num, int):
             return num
         try:
