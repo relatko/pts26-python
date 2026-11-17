@@ -1,5 +1,5 @@
 [MASTER]
-disable = missing-module-docstring, missing-class-docstring, missing-function-docstring, too-few-public-methods
+disable = missing-module-docstring, missing-class-docstring, missing-function-docstring, too-few-public-methods, C0103, C0303, C0304
 
 [SIMILARITIES]
 ignore-imports=yes

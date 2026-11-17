@@ -1,9 +1,12 @@
 from __future__ import annotations
+
 import json
 from collections import Counter
-from typing import Mapping, Sequence, Any
-from power_grid.simple_types import Resource
+from collections.abc import Mapping, Sequence
+from typing import Any, ClassVar
+
 from power_grid.interfaces import InterfaceResourcePoolResourceMarket
+from power_grid.simple_types import Resource
 
 
 class ResourceMarket:
@@ -12,7 +15,7 @@ class ResourceMarket:
     _pool: InterfaceResourcePoolResourceMarket
     _expanded_prices: dict[Resource, list[int]]
     _refilling_pattern: dict[int, dict[Resource, int]]
-    MAX_RESOURCES: dict[Resource, int] = {
+    MAX_RESOURCES: ClassVar[dict[Resource, int]] = {
         Resource.COAL: 24,
         Resource.OIL: 24,
         Resource.GARBAGE: 24,
