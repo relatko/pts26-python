@@ -133,3 +133,4 @@ class GameController: # pylint: disable=too-many-instance-attributes
 
     def _reversed_order(self) -> list[PlayerColor]:
         return list(reversed(self._player_order))
+    

@@ -78,4 +78,7 @@ class Towns:
     def start_step3(self) -> None:
         """Three houses fit into a town."""
         self._max_houses_in_town = 3
-        
+
+    def number_of_towns(self, player: PlayerColor) -> int:
+        """Towns where the player has a house (same as get_number_of_houses)."""
+        return self.get_number_of_houses(player)  

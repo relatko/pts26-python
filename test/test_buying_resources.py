@@ -1,4 +1,5 @@
 """Tests for BuyingResources."""
+# pylint: disable=wrong-import-order
 import json
 import unittest
 from power_grid.buying_resources import BuyingResources

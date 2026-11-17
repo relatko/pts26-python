@@ -51,7 +51,7 @@ class FakePool:
         self.bought: list[Resource] = []
         self.refills: list[tuple[int, int]] = []
 
-    def price(self, resources: Sequence[Resource]) -> Optional[int]:
+    def price(self, resources: Sequence[Resource]) -> Optional[int]:# pylint: disable=unused-argument
         return self.price_value
 
     def buy(self, resources: Sequence[Resource]) -> None:
@@ -70,8 +70,8 @@ class FakeTowns:
         self.counts: dict[PlayerColor, int] = {RED: 3, BLUE: 3}
         self.step2_started = 0
 
-    def buy_houses(self, player: PlayerColor, town_names: Sequence[str],
-                   max_money: int) -> Union[int, RequestError]:
+    def buy_houses(self, player: PlayerColor, town_names: Sequence[str], # pylint: disable=unused-argument
+                   max_money: int) -> Union[int, RequestError]: # pylint: disable=unused-argument
         return self.cost
 
     def number_of_towns(self, player: PlayerColor) -> int:

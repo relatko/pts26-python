@@ -1,4 +1,5 @@
 """Tests for Bureaucracy."""
+# pylint: disable=wrong-import-order
 import unittest
 from power_grid.bureaucracy import Bureaucracy
 from power_grid.simple_types import (

@@ -1,4 +1,5 @@
 """Tests for BuildingHouses."""
+# pylint: disable=wrong-import-order
 import json
 import unittest
 from power_grid.building_houses import BuildingHouses
