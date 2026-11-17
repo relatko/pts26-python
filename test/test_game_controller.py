@@ -1,5 +1,6 @@
 # pylint: disable=missing-class-docstring, missing-function-docstring, unused-argument
 # pylint: disable=duplicate-code, too-many-instance-attributes
+import json
 import unittest
 from collections.abc import Sequence
 
@@ -202,6 +203,18 @@ class TestGameController(unittest.TestCase):
         self.assertTrue(self.controller.game_over)
         self.assertIsInstance(self.controller.do_not_want_power_plant(RED), RequestError)
         self.assertIsInstance(self.controller.use_power_plants(RED, [PPN], []), RequestError)
+        
+    def test_get_state_contains_phase_and_phase_state(self) -> None:
+        state = json.loads(self.controller.get_state())
+        self.assertEqual(state["game_phase"], "AUCTION")
+        self.assertFalse(state["game_over"])
+        self.assertTrue(state["is_first_turn"])
+        self.assertEqual(state["phase_state"], "")
+
+    def test_get_state_follows_the_phase(self) -> None:
+        self._finish_auction()
+        state = json.loads(self.controller.get_state())
+        self.assertEqual(state["game_phase"], "BUY_RESOURCES")
 
 
 if __name__ == "__main__":

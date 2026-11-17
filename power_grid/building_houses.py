@@ -54,8 +54,5 @@ class BuildingHouses:
             self._towns.start_step2()
         # Removing plants draws new ones; the Step 3 card may be among them.
         self._market.remove_power_plants_cheaper_than(max_houses + 1)
-        
-        # Безопасно проверяем is_step3_start на случай, если у рынка (например, FakeMarket) нет этого метода
-        is_step3 = getattr(self._market, "is_step3_start", lambda: False)()
-        if self._steps.checkAndBumpToStep3(is_step3):
+        if self._steps.checkAndBumpToStep3(self._market.is_step3_start()):
             self._market.start_step3()
