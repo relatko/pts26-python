@@ -55,6 +55,7 @@ class BuildingHousesTest(unittest.TestCase):
     def test_step3_starts_market_step3(self) -> None:
         self.steps.startStep2()
         self.towns.max = 14
+        self.market.should_trigger_step3 = True  # <--- Включаем флаг только для этого теста
         self.phase.build_houses(BLUE, ["Berlin"])
         self.assertEqual(self.market.step3_started, 1)
 

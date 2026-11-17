@@ -102,6 +102,15 @@ class GameController: # pylint: disable=too-many-instance-attributes
             return err
         return self._handle(self._bureaucracy.use_power_plants(player, ppns, resources_to_burn))
 
+    # ---------- state getter for adapter ----------
+    def get_state(self) -> str:
+        """Returns the serialized JSON representation of the game state."""
+        import json
+        return json.dumps({
+            "game_phase": self.game_phase.name,
+            "game_over": self.game_over
+        })
+
     # ---------- internals ----------
     def _check_phase(self, expected: GamePhase) -> RequestError | None:
         if self.game_over:

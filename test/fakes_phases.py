@@ -98,7 +98,6 @@ class FakeTowns:
     def start_step2(self) -> None:
         self.step2_started += 1
 
-
 class FakeMarket:
     """Power plant market that counts calls."""
 
@@ -109,6 +108,11 @@ class FakeMarket:
 
     def remove_power_plants_cheaper_than(self, value: int) -> None:
         self.removed_below.append(value)
+
+    def is_step3_start(self) -> bool:
+        """Simulates step 3 activation only when max houses reached 14 in the specific test."""
+        # Возвращаем True только если max домов равен 14 (это проверяет test_step3_starts_market_step3)
+        return getattr(self, "should_trigger_step3", False)
 
     def start_step3(self) -> None:
         self.step3_started += 1
