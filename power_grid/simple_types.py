@@ -1,6 +1,7 @@
+# pylint: disable=invalid-name
 from enum import Enum, auto
 from dataclasses import dataclass
-from typing import Optional
+from typing import List
 
 
 class Resource(Enum):
@@ -12,7 +13,7 @@ class Resource(Enum):
 
 
 class PlayerColor(Enum):
-    """The possible colors for players. Power Grid supports up to 6 players."""
+    """The possible colors for players according to the UML diagram."""
     RED = auto()
     BLUE = auto()
     GREEN = auto()
@@ -29,15 +30,16 @@ class PhaseStatus(Enum):
 
 
 class GamePhase(Enum):
-    """The four sequential phases that make up a single game round."""
+    """The sequential phases that make up a single game round."""
     AUCTION = auto()
     BUY_RESOURCES = auto()
     BUILD_HOUSES = auto()
     BUREAUCRACY = auto()
+    GAME_END = auto()
 
 
 class GameStep(Enum):
-    """The three steps of the game. The step affects building limits and deck composition."""
+    """The three steps of the game. The step affects building limits."""
     STEP_1 = auto()
     STEP_2 = auto()
     STEP_3 = auto()
@@ -64,24 +66,10 @@ class SerializedGameState:
 @dataclass(frozen=True)
 class PowerPlant:
     """
-    Represents a power plant card.
-    
-    Attributes:
-        number: The plant's number (also its minimum auction bid).
-        resource: The resource it requires (None if it's an ecological plant).
-        cities: How many cities this plant can power.
-        required_resources: How many units of the resource are needed to run it.
+    Represents a power plant card according to the UML diagram.
+    We use camelCase here to maintain compatibility with the rest of the team's code.
     """
-    number: int
-    resource: Optional[Resource]
-    cities: int
-    required_resources: int = 0
-
-    def __post_init__(self) -> None:
-        """Validates the power plant data after initialization."""
-        if self.number < 3 or self.number > 50:
-            raise ValueError(f"Invalid power plant number: {self.number}")
-        if self.cities < 1:
-            raise ValueError("Power plant must power at least 1 city")
-        if self.resource is not None and self.required_resources < 1:
-            raise ValueError("Non-ecological plant must require at least 1 resource")
+    number: PowerPlantNumber
+    acceptedResources: List[Resource]
+    numberOfCities: int
+    resourceAmount: int = 0

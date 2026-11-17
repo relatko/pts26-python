@@ -1,13 +1,19 @@
 # pylint: disable=missing-class-docstring, missing-function-docstring, unused-argument
 # pylint: disable=duplicate-code, too-many-instance-attributes
 import unittest
-from typing import Sequence, Union
+from collections.abc import Sequence
 
 from power_grid.game_controller import GameController
 from power_grid.simple_types import (
-    GamePhase, PhaseStatus, PlayerColor, PowerPlantNumber, RequestError, Resource)
+    GamePhase,
+    PhaseStatus,
+    PlayerColor,
+    PowerPlantNumber,
+    RequestError,
+    Resource,
+)
 
-Result = Union[PhaseStatus, RequestError]
+Result = PhaseStatus | RequestError
 RED, BLUE, GREEN = PlayerColor.RED, PlayerColor.BLUE, PlayerColor.GREEN
 PPN = PowerPlantNumber(3)
 

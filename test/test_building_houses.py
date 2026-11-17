@@ -2,11 +2,11 @@
 # pylint: disable=wrong-import-order
 import json
 import unittest
+
+from test.fakes_phases import BLUE, RED, FakeBoard, FakeMarket, FakeTowns
 from power_grid.building_houses import BuildingHouses
 from power_grid.simple_types import PhaseStatus, RequestError
 from power_grid.steps import CheckAndBumpStep
-from test.fakes_phases import BLUE, RED, FakeBoard, FakeMarket, FakeTowns
-
 
 class BuildingHousesTest(unittest.TestCase):
     """BuildingHouses against fake towns and market and the real step checker."""

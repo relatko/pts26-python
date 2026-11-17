@@ -1,6 +1,6 @@
 """Connections between towns and the price of connecting a town to a network."""
 import heapq
-from typing import Sequence
+from collections.abc import Sequence
 
 
 class Connections:

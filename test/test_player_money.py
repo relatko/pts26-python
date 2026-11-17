@@ -1,4 +1,5 @@
 import unittest
+
 from power_grid.player_money import PlayerMoney
 from power_grid.simple_types import PlayerColor
 

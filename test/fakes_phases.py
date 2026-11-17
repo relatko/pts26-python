@@ -1,13 +1,28 @@
+# pylint: disable=unused-argument
 """Fakes shared by the tests of BuyingResources, BuildingHouses, Bureaucracy."""
-from typing import Optional, Sequence, Union
-from power_grid.simple_types import (
-    PlayerColor, PowerPlant, RequestError, Resource)
+from collections.abc import Sequence
 
-RED = PlayerColor.RED
+from power_grid.simple_types import (
+    PlayerColor,
+    PowerPlant,
+    PowerPlantNumber,
+    RequestError,
+    Resource,
+)
+
 BLUE = PlayerColor.BLUE
-COAL_PLANT = PowerPlant(number=5, resource=Resource.COAL, cities=2,
-                        required_resources=2)
-ECO_PLANT = PowerPlant(number=13, resource=None, cities=1)
+RED = PlayerColor.RED
+COAL_PLANT = PowerPlant(
+    number=PowerPlantNumber(5),
+    acceptedResources=[Resource.COAL],
+    numberOfCities=2,
+    resourceAmount=2
+)
+ECO_PLANT = PowerPlant(
+    number=PowerPlantNumber(13),
+    acceptedResources=[],
+    numberOfCities=1
+)
 
 
 class FakeBoard:
@@ -46,12 +61,12 @@ class FakeBoard:
 class FakePool:
     """Resource pool with a fixed price."""
 
-    def __init__(self, price: Optional[int] = 3) -> None:
+    def __init__(self, price: int | None = 3) -> None:
         self.price_value = price
         self.bought: list[Resource] = []
         self.refills: list[tuple[int, int]] = []
 
-    def price(self, resources: Sequence[Resource]) -> Optional[int]:# pylint: disable=unused-argument
+    def price(self, resources: Sequence[Resource]) -> int | None:
         return self.price_value
 
     def buy(self, resources: Sequence[Resource]) -> None:
@@ -65,13 +80,13 @@ class FakeTowns:
     """Towns with a fixed building cost."""
 
     def __init__(self) -> None:
-        self.cost: Union[int, RequestError] = 10
+        self.cost: int | RequestError = 10
         self.max = 0
         self.counts: dict[PlayerColor, int] = {RED: 3, BLUE: 3}
         self.step2_started = 0
 
-    def buy_houses(self, player: PlayerColor, town_names: Sequence[str], # pylint: disable=unused-argument
-                   max_money: int) -> Union[int, RequestError]: # pylint: disable=unused-argument
+    def buy_houses(self, player: PlayerColor, town_names: Sequence[str],
+                   max_money: int) -> int | RequestError:
         return self.cost
 
     def number_of_towns(self, player: PlayerColor) -> int:

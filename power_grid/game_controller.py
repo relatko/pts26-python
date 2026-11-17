@@ -1,5 +1,5 @@
 """GameController: switches the game phases and forwards player requests to them."""
-from typing import Optional, Sequence, Union
+from collections.abc import Sequence
 
 from power_grid.phase_interfaces import (
     InterfaceAuctionPowerPlantsGameController,
@@ -9,7 +9,13 @@ from power_grid.phase_interfaces import (
     InterfaceDeterminePlayerOrderGameController,
 )
 from power_grid.simple_types import (
-    GamePhase, PhaseStatus, PlayerColor, PowerPlantNumber, RequestError, Resource)
+    GamePhase,
+    PhaseStatus,
+    PlayerColor,
+    PowerPlantNumber,
+    RequestError,
+    Resource,
+)
 
 
 class GameController: # pylint: disable=too-many-instance-attributes
@@ -44,29 +50,29 @@ class GameController: # pylint: disable=too-many-instance-attributes
     # ---------- phase 2: auction ----------
     def select_power_plant_to_bid(
         self, player: PlayerColor, ppn: PowerPlantNumber, first_bid: int
-    ) -> Optional[RequestError]:
+    ) -> RequestError | None:
         if (err := self._check_phase(GamePhase.AUCTION)) is not None:
             return err
         return self._handle(self._auction.select_power_plant_to_bid(player, ppn, first_bid))
 
-    def do_not_want_power_plant(self, player: PlayerColor) -> Optional[RequestError]:
+    def do_not_want_power_plant(self, player: PlayerColor) -> RequestError | None:
         if (err := self._check_phase(GamePhase.AUCTION)) is not None:
             return err
         return self._handle(self._auction.do_not_want_power_plant(player))
 
-    def bid_for_current_power_plant(self, player: PlayerColor, bid: int) -> Optional[RequestError]:
+    def bid_for_current_power_plant(self, player: PlayerColor, bid: int) -> RequestError | None:
         if (err := self._check_phase(GamePhase.AUCTION)) is not None:
             return err
         return self._handle(self._auction.bid_for_current_power_plant(player, bid))
 
-    def do_not_bid_for_current_power_plant(self, player: PlayerColor) -> Optional[RequestError]:
+    def do_not_bid_for_current_power_plant(self, player: PlayerColor) -> RequestError | None:
         if (err := self._check_phase(GamePhase.AUCTION)) is not None:
             return err
         return self._handle(self._auction.do_not_bid_for_current_power_plant(player))
 
     def remove_power_plant(
         self, player: PlayerColor, ppn: PowerPlantNumber, resources: Sequence[Resource]
-    ) -> Optional[RequestError]:
+    ) -> RequestError | None:
         if (err := self._check_phase(GamePhase.AUCTION)) is not None:
             return err
         return self._handle(self._auction.remove_power_plant(player, ppn, resources))
@@ -74,7 +80,7 @@ class GameController: # pylint: disable=too-many-instance-attributes
     # ---------- phase 3: resources ----------
     def buy_resources(
         self, player: PlayerColor, resources: Sequence[Resource]
-    ) -> Optional[RequestError]:
+    ) -> RequestError | None:
         if (err := self._check_phase(GamePhase.BUY_RESOURCES)) is not None:
             return err
         return self._handle(self._buying.buy_resources(player, resources))
@@ -82,7 +88,7 @@ class GameController: # pylint: disable=too-many-instance-attributes
     # ---------- phase 4: houses ----------
     def buy_houses(
         self, player: PlayerColor, town_names: Sequence[str]
-    ) -> Optional[RequestError]:
+    ) -> RequestError | None:
         if (err := self._check_phase(GamePhase.BUILD_HOUSES)) is not None:
             return err
         return self._handle(self._building.build_houses(player, town_names))
@@ -91,20 +97,20 @@ class GameController: # pylint: disable=too-many-instance-attributes
     def use_power_plants(
         self, player: PlayerColor, ppns: Sequence[PowerPlantNumber],
         resources_to_burn: Sequence[Resource]
-    ) -> Optional[RequestError]:
+    ) -> RequestError | None:
         if (err := self._check_phase(GamePhase.BUREAUCRACY)) is not None:
             return err
         return self._handle(self._bureaucracy.use_power_plants(player, ppns, resources_to_burn))
 
     # ---------- internals ----------
-    def _check_phase(self, expected: GamePhase) -> Optional[RequestError]:
+    def _check_phase(self, expected: GamePhase) -> RequestError | None:
         if self.game_over:
             return RequestError("The game is over")
         if self.game_phase is not expected:
             return RequestError("Wrong phase")
         return None
 
-    def _handle(self, result: Union[PhaseStatus, RequestError]) -> Optional[RequestError]:
+    def _handle(self, result: PhaseStatus | RequestError) -> RequestError | None:
         if isinstance(result, RequestError):
             return result
         if result is PhaseStatus.GAME_ENDS:

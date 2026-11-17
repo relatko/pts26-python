@@ -2,10 +2,10 @@
 # pylint: disable=wrong-import-order
 import json
 import unittest
+
+from test.fakes_phases import BLUE, COAL_PLANT, RED, FakeBoard, FakePool
 from power_grid.buying_resources import BuyingResources
 from power_grid.simple_types import PhaseStatus, RequestError, Resource
-from test.fakes_phases import BLUE, COAL_PLANT, RED, FakeBoard, FakePool
-
 
 class BuyingResourcesTest(unittest.TestCase):
     """BuyingResources against fake board and pool."""

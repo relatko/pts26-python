@@ -1,8 +1,13 @@
 """BuildingHouses phase."""
-from typing import Mapping, Sequence, Union
+from collections.abc import Mapping, Sequence
+
 from power_grid.phase_dependencies import (
-    PlayerBoardForPhases, PowerPlantMarketForPhases, StepChecker,
-    TownsForPhases, TurnOrder)
+    PlayerBoardForPhases,
+    PowerPlantMarketForPhases,
+    StepChecker,
+    TownsForPhases,
+    TurnOrder,
+)
 from power_grid.simple_types import PhaseStatus, PlayerColor, RequestError
 
 
@@ -24,7 +29,7 @@ class BuildingHouses:
 
     def build_houses(
             self, player: PlayerColor,
-            town_names: Sequence[str]) -> Union[PhaseStatus, RequestError]:
+            town_names: Sequence[str]) -> PhaseStatus | RequestError:
         """Builds houses in the given towns for the player on turn."""
         error = self._turn.check_turn(player)
         if error is not None:

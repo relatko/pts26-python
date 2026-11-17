@@ -1,10 +1,12 @@
 # pylint: disable=too-many-instance-attributes, too-many-public-methods
-from typing import Any, Sequence
-import unittest
 import json
+import unittest
+from collections.abc import Sequence
+from typing import Any
+
+from power_grid.interfaces import InterfaceResourcePoolResourceMarket
 from power_grid.resource_market import ResourceMarket
 from power_grid.simple_types import Resource
-from power_grid.interfaces import InterfaceResourcePoolResourceMarket
 
 
 class ResourcePoolFake(InterfaceResourcePoolResourceMarket):
@@ -25,7 +27,7 @@ class ResourcePoolFake(InterfaceResourcePoolResourceMarket):
 
     def get_from_storage_space(self, resources: Sequence[Resource]) -> None:
         res: list[Resource] = list(resources)
-        assert all({x == self.storage_resource for x in res})
+        assert all(x == self.storage_resource for x in res)
         self.storage_count -= len(res)
         assert self.storage_count >= 0
 

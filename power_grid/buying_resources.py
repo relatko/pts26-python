@@ -1,17 +1,26 @@
 """BuyingResources phase."""
 from collections import Counter
-from typing import Mapping, Sequence, Union
+from collections.abc import Mapping, Sequence
+
 from power_grid.phase_dependencies import (
-    PlayerBoardForPhases, ResourcePoolForPhases, TurnOrder)
+    PlayerBoardForPhases,
+    ResourcePoolForPhases,
+    TurnOrder,
+)
 from power_grid.simple_types import (
-    PhaseStatus, PlayerColor, PowerPlant, RequestError, Resource)
+    PhaseStatus,
+    PlayerColor,
+    PowerPlant,
+    RequestError,
+    Resource,
+)
 
 
 def _capacity(plants: Sequence[PowerPlant]) -> Counter[Resource]:
     capacity: Counter[Resource] = Counter()
     for plant in plants:
-        if plant.resource is not None:
-            capacity[plant.resource] += 2 * plant.required_resources
+        for res in plant.acceptedResources:
+            capacity[res] += plant.resourceAmount
     return capacity
 
 
@@ -30,7 +39,7 @@ class BuyingResources:
 
     def buy_resources(
             self, player: PlayerColor,
-            resources: Sequence[Resource]) -> Union[PhaseStatus, RequestError]:
+            resources: Sequence[Resource]) -> PhaseStatus | RequestError:
         """Buys the whole set for the player on turn."""
         error = self._turn.check_turn(player)
         if error is not None:
@@ -50,7 +59,7 @@ class BuyingResources:
         return self._turn.state("BUY_RESOURCES")
 
     def _price_of(self, board: PlayerBoardForPhases,
-                  resources: Sequence[Resource]) -> Union[int, RequestError]:
+                  resources: Sequence[Resource]) -> int | RequestError:
         price = self._pool.price(resources)
         if price is None:
             return RequestError("Resources are not available in the market")

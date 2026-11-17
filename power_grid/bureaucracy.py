@@ -1,13 +1,24 @@
 # pylint: disable=too-many-arguments, too-many-positional-arguments
 """Bureaucracy phase."""
 from collections import Counter
-from typing import Mapping, Sequence, Union
+from collections.abc import Mapping, Sequence
+
 from power_grid.phase_dependencies import (
-    PlayerBoardForPhases, PowerPlantMarketForPhases, ResourcePoolForPhases,
-    StepChecker, TownsForPhases, TurnOrder)
+    PlayerBoardForPhases,
+    PowerPlantMarketForPhases,
+    ResourcePoolForPhases,
+    StepChecker,
+    TownsForPhases,
+    TurnOrder,
+)
 from power_grid.simple_types import (
-    PhaseStatus, PlayerColor, PowerPlant, PowerPlantNumber, RequestError,
-    Resource)
+    PhaseStatus,
+    PlayerColor,
+    PowerPlant,
+    PowerPlantNumber,
+    RequestError,
+    Resource,
+)
 
 
 class Bureaucracy:
@@ -31,7 +42,7 @@ class Bureaucracy:
 
     def use_power_plants(
             self, player: PlayerColor, ppns: Sequence[PowerPlantNumber],
-            resources_to_burn: Sequence[Resource]) -> Union[PhaseStatus, RequestError]:
+            resources_to_burn: Sequence[Resource]) -> PhaseStatus | RequestError:
         """Runs the chosen plants, burns fuel and pays income."""
         error = self._turn.check_turn(player)
         if error is not None:
@@ -41,8 +52,8 @@ class Bureaucracy:
         if isinstance(plants, RequestError):
             return plants
         board.remove_resources(resources_to_burn)
-        powered = min(sum(p.cities for p in plants),
-                      self._towns.number_of_towns(player))
+        powered = min(sum(p.numberOfCities for p in plants),
+              self._towns.number_of_towns(player))
         board.receive_money(powered)
         if self._turn.advance() is PhaseStatus.PHASE_ENDS:
             return self._finish_round()
@@ -55,23 +66,29 @@ class Bureaucracy:
     @staticmethod
     def _chosen_plants(
             board: PlayerBoardForPhases, ppns: Sequence[PowerPlantNumber],
-            burn: Sequence[Resource]) -> Union[list[PowerPlant], RequestError]:
+            burn: Sequence[Resource]) -> list[PowerPlant] | RequestError:
         if len(set(ppns)) != len(ppns):
             return RequestError("Power plant listed twice")
-        owned = {PowerPlantNumber(p.number): p for p in board.get_power_plants()}
+
+        owned = {p.number: p for p in board.get_power_plants()}
         plants: list[PowerPlant] = []
+        
         for ppn in ppns:
             if ppn not in owned:
                 return RequestError(f"Power plant {ppn.number} is not yours")
             plants.append(owned[ppn])
+            
         needed: Counter[Resource] = Counter()
         for plant in plants:
-            if plant.resource is not None:
-                needed[plant.resource] += plant.required_resources
+            for res in plant.acceptedResources:
+                needed[res] += plant.resourceAmount
+                
         if Counter(burn) != needed:
             return RequestError("Resources to burn do not match the power plants")
+            
         if Counter(burn) - Counter(board.get_resources()):
             return RequestError("You do not have these resources")
+            
         return plants
 
     def _finish_round(self) -> PhaseStatus:

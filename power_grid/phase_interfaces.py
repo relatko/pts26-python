@@ -1,7 +1,14 @@
 # pylint: disable=unused-argument, duplicate-code
-from typing import Protocol, Sequence, Union
+from collections.abc import Sequence
+from typing import Protocol
+
 from power_grid.simple_types import (
-    PhaseStatus, PlayerColor, PowerPlantNumber, RequestError, Resource)
+    PhaseStatus,
+    PlayerColor,
+    PowerPlantNumber,
+    RequestError,
+    Resource,
+)
 
 
 class InterfaceDeterminePlayerOrderGameController(Protocol):
@@ -24,23 +31,23 @@ class InterfaceAuctionPowerPlantsGameController(Protocol):
 
     def select_power_plant_to_bid(
             self, player: PlayerColor, ppn: PowerPlantNumber,
-            first_bid: int) -> Union[PhaseStatus, RequestError]:
+            first_bid: int) -> PhaseStatus | RequestError:
         ...
 
-    def do_not_want_power_plant(self, player: PlayerColor) -> Union[PhaseStatus, RequestError]:
+    def do_not_want_power_plant(self, player: PlayerColor) -> PhaseStatus | RequestError:
         ...
 
     def bid_for_current_power_plant(
-            self, player: PlayerColor, bid: int) -> Union[PhaseStatus, RequestError]:
+            self, player: PlayerColor, bid: int) -> PhaseStatus | RequestError:
         ...
 
     def do_not_bid_for_current_power_plant(
-            self, player: PlayerColor) -> Union[PhaseStatus, RequestError]:
+            self, player: PlayerColor) -> PhaseStatus | RequestError:
         ...
 
     def remove_power_plant(
             self, player: PlayerColor, ppn: PowerPlantNumber,
-            resources: Sequence[Resource]) -> Union[PhaseStatus, RequestError]:
+            resources: Sequence[Resource]) -> PhaseStatus | RequestError:
         ...
 
     def get_state(self) -> str:
@@ -55,7 +62,7 @@ class InterfaceBuyingResourcesGameController(Protocol):
 
     def buy_resources(
             self, player: PlayerColor,
-            resources: Sequence[Resource]) -> Union[PhaseStatus, RequestError]:
+            resources: Sequence[Resource]) -> PhaseStatus | RequestError:
         ...
 
     def get_state(self) -> str:
@@ -70,7 +77,7 @@ class InterfaceBuildingHousesGameController(Protocol):
 
     def build_houses(
             self, player: PlayerColor,
-            town_names: Sequence[str]) -> Union[PhaseStatus, RequestError]:
+            town_names: Sequence[str]) -> PhaseStatus | RequestError:
         ...
 
     def get_state(self) -> str:
@@ -85,7 +92,7 @@ class InterfaceBureaucracyGameController(Protocol):
 
     def use_power_plants(
             self, player: PlayerColor, ppns: Sequence[PowerPlantNumber],
-            resources_to_burn: Sequence[Resource]) -> Union[PhaseStatus, RequestError]:
+            resources_to_burn: Sequence[Resource]) -> PhaseStatus | RequestError:
         ...
 
     def get_state(self) -> str:

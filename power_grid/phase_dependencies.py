@@ -1,9 +1,16 @@
 # pylint: disable=unused-argument, invalid-name
 """What BuyingResources, BuildingHouses and Bureaucracy need from other classes."""
 import json
-from typing import Optional, Protocol, Sequence, Union
+from collections.abc import Sequence
+from typing import Protocol
+
 from power_grid.simple_types import (
-    PhaseStatus, PlayerColor, PowerPlant, RequestError, Resource)
+    PhaseStatus,
+    PlayerColor,
+    PowerPlant,
+    RequestError,
+    Resource,
+)
 
 
 class PlayerBoardForPhases(Protocol):
@@ -34,7 +41,7 @@ class PlayerBoardForPhases(Protocol):
 class ResourcePoolForPhases(Protocol):
     """ResourcePool (issue #15) as seen by the three phases."""
 
-    def price(self, resources: Sequence[Resource]) -> Optional[int]:
+    def price(self, resources: Sequence[Resource]) -> int | None:
         """Price of the whole set, None if the market cannot supply it."""
         ...
 
@@ -50,7 +57,7 @@ class TownsForPhases(Protocol):
 
     def buy_houses(
             self, player: PlayerColor, town_names: Sequence[str],
-            max_money: int) -> Union[int, RequestError]:
+            max_money: int) -> int | RequestError:
         """Returns the total cost or an error."""
         ...
 
@@ -103,13 +110,13 @@ class TurnOrder:
         self._order = list(order)
         self._index = 0
 
-    def current(self) -> Optional[PlayerColor]:
+    def current(self) -> PlayerColor | None:
         """Returns the player on turn, None if everybody has played."""
         if self._index < len(self._order):
             return self._order[self._index]
         return None
 
-    def check_turn(self, player: PlayerColor) -> Optional[RequestError]:
+    def check_turn(self, player: PlayerColor) -> RequestError | None:
         """Returns an error if it is not the player's turn."""
         if self.current() != player:
             return RequestError("It is not your turn")
